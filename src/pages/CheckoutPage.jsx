@@ -8,29 +8,26 @@ import Alert from '../components/Alert';
 import AddressForm from '../components/AddressForm';
 import { useCart } from '../hooks/useCart';
 import { useAddresses } from '../hooks/useAddresses';
-import { useOrders } from '../hooks/useOrders';
+import { createPayPalOrder } from '../api/paymentService';
 import { formatCurrency } from '../utils/formatters';
 import { formatErrorMessage } from '../utils/errorHandler';
+import { savePendingPayPalPayment } from '../utils/paymentSession';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const { item, fetch: fetchCart, isLoading: cartLoading, error: cartError, clearError: clearCartError } = useCart();
   const { addresses, fetch: fetchAddresses, create: createAddress, isLoading: addressesLoading, error: addressesError, clearError: clearAddressesError } = useAddresses();
-  const { create, isLoading: orderLoading, error: orderError, clearError: clearOrderError, currentOrder } = useOrders();
   const [selectedAddressId, setSelectedAddressId] = useState('');
   const [showAddressForm, setShowAddressForm] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
 
   useEffect(() => {
     fetchCart();
     fetchAddresses();
   }, []);
 
-  useEffect(() => {
-    const defaultAddress = addresses.find((address) => address.is_default) || addresses[0];
-    if (defaultAddress && !selectedAddressId) {
-      setSelectedAddressId(String(defaultAddress.id));
-    }
-  }, [addresses, selectedAddressId]);
+  const defaultAddress = useMemo(() => addresses.find((address) => address.is_default) || addresses[0] || null, [addresses]);
+  const activeAddressId = selectedAddressId || (defaultAddress ? String(defaultAddress.id) : '');
 
   const subtotal = useMemo(() => (item ? Number(item.total_price) : 0), [item]);
 
@@ -48,21 +45,35 @@ export default function CheckoutPage() {
     }
   };
 
-  const handlePlaceOrder = async () => {
-    if (!selectedAddressId) {
+  const handlePayWithPayPal = async () => {
+    if (!activeAddressId) {
       toast.error('Select a delivery address first');
       return;
     }
 
     try {
-      const result = await create('cod', selectedAddressId);
-      if (result.meta.requestStatus !== 'fulfilled') {
-        throw new Error('Failed to create order');
+      setPaymentLoading(true);
+
+      const response = await createPayPalOrder(Number(activeAddressId));
+      const payload = response.data?.data || response.data;
+      const approvalUrl = payload?.approval_url;
+      const paypalOrderId = payload?.paypal_order_id;
+
+      if (!approvalUrl || !paypalOrderId) {
+        throw new Error('PayPal approval link is missing');
       }
-      toast.success('Order placed successfully');
-      navigate('/orders');
+
+      savePendingPayPalPayment({
+        addressId: Number(activeAddressId),
+        paypalOrderId,
+        amount: payload?.amount,
+        currency: payload?.currency,
+      });
+
+      window.location.assign(approvalUrl);
     } catch (err) {
       toast.error(formatErrorMessage(err));
+      setPaymentLoading(false);
     }
   };
 
@@ -77,17 +88,16 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-[#f6f7fb] px-4 py-8 lg:px-6 lg:py-12">
       <div className="mx-auto max-w-6xl">
-        <h1 className="text-3xl font-black tracking-tight text-slate-900">Checkout</h1>
+        <h1 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">Checkout</h1>
         <p className="mt-2 text-slate-500">Confirm your address and place the order.</p>
 
-        {(cartError || addressesError || orderError) && (
+        {(cartError || addressesError) && (
           <Alert
             type="error"
-            message={formatErrorMessage(cartError || addressesError || orderError)}
+            message={formatErrorMessage(cartError || addressesError)}
             onClose={() => {
               clearCartError();
               clearAddressesError();
-              clearOrderError();
             }}
             className="mt-6"
           />
@@ -105,7 +115,7 @@ export default function CheckoutPage() {
           <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_0.9fr]">
             <div className="space-y-6">
               <Card>
-                <h2 className="text-xl font-bold text-slate-900">Delivery address</h2>
+                <h2 className="text-lg font-bold text-slate-900 sm:text-xl">Delivery address</h2>
                 <div className="mt-5 space-y-3">
                   {addresses.map((address) => (
                     <label key={address.id} className="flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 p-4 transition hover:border-indigo-500">
@@ -113,7 +123,7 @@ export default function CheckoutPage() {
                         type="radio"
                         name="address"
                         value={address.id}
-                        checked={String(selectedAddressId) === String(address.id)}
+                        checked={String(activeAddressId) === String(address.id)}
                         onChange={() => setSelectedAddressId(String(address.id))}
                         className="mt-1"
                       />
@@ -149,7 +159,7 @@ export default function CheckoutPage() {
 
             <div className="space-y-6">
               <Card>
-                <h2 className="text-xl font-bold text-slate-900">Order summary</h2>
+                <h2 className="text-lg font-bold text-slate-900 sm:text-xl">Order summary</h2>
                 <div className="mt-5 space-y-3 text-sm">
                   <div className="flex items-center justify-between">
                     <span className="text-slate-500">Product</span>
@@ -170,22 +180,16 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="mt-6 rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
-                  Payment method is set to Cash on Delivery for this build. PayPal is disabled by the backend.
+                  You’ll finish payment securely on PayPal, and we’ll confirm your order automatically when you return.
                 </div>
 
                 <Button
                   className="mt-6 w-full"
-                  onClick={handlePlaceOrder}
-                  disabled={orderLoading || !selectedAddressId || !item}
+                  onClick={handlePayWithPayPal}
+                  disabled={paymentLoading || !activeAddressId || !item}
                 >
-                  {orderLoading ? 'Placing order...' : 'Place order'}
+                  {paymentLoading ? 'Redirecting to PayPal...' : 'Continue with PayPal'}
                 </Button>
-
-                {currentOrder?.order_id && (
-                  <div className="mt-4 rounded-2xl bg-green-50 p-4 text-sm text-green-900">
-                    Order {currentOrder.order_id} created successfully.
-                  </div>
-                )}
               </Card>
             </div>
           </div>

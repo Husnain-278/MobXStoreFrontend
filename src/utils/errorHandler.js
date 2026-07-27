@@ -4,6 +4,10 @@ export const getErrorMessage = (error) => {
     return error;
   }
 
+  if (error?.errors) {
+    return getErrorMessage(error.errors);
+  }
+
   if (error?.detail) {
     return error.detail;
   }

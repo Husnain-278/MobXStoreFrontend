@@ -21,6 +21,10 @@ export const API_ENDPOINTS = {
     ORDER: '/cart/order/',
     ORDERS: '/cart/orders/',
   },
+  PAYMENTS: {
+    CREATE_ORDER: '/payments/create-order/',
+    CAPTURE_ORDER: '/payments/capture-order/',
+  },
   ADDRESSES: {
     LIST: '/addresses/',
     CREATE: '/addresses/',
@@ -37,6 +41,9 @@ export const API_ENDPOINTS = {
 // Order statuses
 export const ORDER_STATUSES = {
   PENDING: 'pending',
+  PROCESSING: 'processing',
+  SHIPPED: 'shipped',
+  DELIVERED: 'delivered',
   COMPLETED: 'completed',
   CANCELLED: 'cancelled',
 };

@@ -45,9 +45,9 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-[#f6f7fb] px-4 py-8 lg:px-6 lg:py-12">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-8 flex items-end justify-between gap-4">
+        <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
           <div>
-            <h1 className="text-3xl font-black tracking-tight text-slate-900">Shopping Cart</h1>
+            <h1 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">Shopping Cart</h1>
             <p className="mt-2 text-slate-500">Your backend allows one active cart item per user.</p>
           </div>
           <Link to="/" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700">
@@ -79,9 +79,9 @@ export default function CartPage() {
         ) : (
           <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
             <Card className="space-y-6">
-              <div className="flex items-center justify-between gap-4 border-b border-slate-200 pb-4">
+              <div className="flex flex-col gap-4 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-900">{item.product_name}</h2>
+                  <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">{item.product_name}</h2>
                   <p className="text-sm text-slate-500">Added {item.created_at ? formatDate(item.created_at) : 'recently'}</p>
                 </div>
                 <Badge variant="gray">Cart item</Badge>
@@ -102,7 +102,7 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Button variant="outline" onClick={() => handleQuantityChange('decrease')} disabled={item.quantity <= 1 || isLoading}>
                   - Decrease
                 </Button>

@@ -22,7 +22,7 @@ export default function OrdersPage() {
   return (
     <div className="min-h-screen bg-[#f6f7fb] px-4 py-8 lg:px-6 lg:py-12">
       <div className="mx-auto max-w-6xl">
-        <h1 className="text-3xl font-black tracking-tight text-slate-900">My Orders</h1>
+        <h1 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">My Orders</h1>
         <p className="mt-2 text-slate-500">Track your order history and statuses.</p>
 
         {error && (
@@ -53,7 +53,7 @@ export default function OrdersPage() {
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <div>
                     <div className="flex flex-wrap items-center gap-3">
-                      <h2 className="text-xl font-bold text-slate-900">{order.product_name}</h2>
+                      <h2 className="text-lg font-bold text-slate-900 sm:text-xl">{order.product_name}</h2>
                       <Badge variant={order.status === 'completed' ? 'success' : order.status === 'cancelled' ? 'danger' : 'warning'}>
                         {order.status}
                       </Badge>
@@ -65,7 +65,7 @@ export default function OrdersPage() {
                     </Link>
                   </div>
 
-                  <div className="grid gap-3 sm:grid-cols-3 md:min-w-[320px]">
+                  <div className="grid gap-3 sm:grid-cols-3">
                     <div>
                       <div className="text-xs uppercase tracking-wide text-slate-400">Quantity</div>
                       <div className="font-semibold text-slate-900">{order.quantity}</div>

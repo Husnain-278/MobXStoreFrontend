@@ -64,10 +64,6 @@ export default function HomePage() {
     }
   }, []);
 
-  useEffect(() => {
-    setLocalSearch(filters.search);
-  }, [filters.search]);
-
   const totalPages = useMemo(() => Math.max(1, Math.ceil(totalCount / pageSize)), [totalCount, pageSize]);
 
   const handleApplyFilters = () => {
@@ -130,37 +126,37 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#f6f7fb] text-slate-900">
       <section className="relative overflow-hidden border-b border-slate-200 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.16),transparent_30%),linear-gradient(180deg,#ffffff_0%,#f6f7fb_100%)]">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 py-14 lg:grid-cols-[1.25fr_0.75fr] lg:px-6 lg:py-20">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:gap-10 sm:py-14 lg:grid-cols-[1.25fr_0.75fr] lg:px-6 lg:py-20">
           <div>
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-medium text-indigo-700 shadow-sm">
               <Sparkles className="h-4 w-4" />
               Premium mobile marketplace
             </div>
-            <h1 className="max-w-2xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="max-w-2xl text-3xl font-black tracking-tight sm:text-5xl lg:text-6xl">
               Smart phones. Sharp prices. Built for serious shopping.
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-600 sm:mt-6 sm:text-lg">
               Browse phones from verified brands, compare specs, and place orders with a streamlined checkout flow powered by your Django backend.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
               <Link
                 to={token ? '/cart' : '/login'}
-                className="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                className="rounded-xl bg-slate-900 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-slate-800"
               >
                 {token ? 'Go to Cart' : 'Sign in to shop'}
               </Link>
               <button
                 type="button"
                 onClick={() => setShowFilters((value) => !value)}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50"
               >
                 <SlidersHorizontal className="h-4 w-4" />
                 {showFilters ? 'Hide filters' : 'Browse filters'}
               </button>
             </div>
 
-            <div className="mt-10 grid max-w-lg grid-cols-3 gap-4">
+            <div className="mt-10 grid max-w-lg grid-cols-1 gap-4 sm:grid-cols-3">
               {HERO_STATS.map((stat) => (
                 <div key={stat.label} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
                   <div className="text-2xl font-black">{stat.value}</div>
@@ -175,12 +171,12 @@ export default function HomePage() {
             <div className="space-y-4">
               <div className="overflow-hidden rounded-3xl bg-linear-to-br from-slate-900 via-slate-800 to-indigo-700 p-6 text-white shadow-lg">
                 <div className="text-xs uppercase tracking-[0.3em] text-indigo-200">MobXStore</div>
-                <div className="mt-10 text-3xl font-black">Built for clean buying journeys.</div>
+                <div className="mt-10 text-2xl font-black sm:text-3xl">Built for clean buying journeys.</div>
                 <p className="mt-4 max-w-sm text-sm text-slate-200">
                   A fast frontend layered over your Django APIs with auth, cart, checkout, and orders.
                 </p>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="rounded-2xl bg-slate-50 p-4">
                   <div className="text-sm text-slate-500">Starting at</div>
                   <div className="mt-1 text-2xl font-bold text-slate-900">{formatCurrency(0)}</div>
@@ -196,13 +192,13 @@ export default function HomePage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-8 lg:px-6 lg:py-12">
-        <div className="mb-6 flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm lg:flex-row lg:items-center lg:justify-between">
+          <div className="mb-6 flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-2xl font-bold">Browse products</h2>
+            <h2 className="text-xl font-bold sm:text-2xl">Browse products</h2>
             <p className="text-sm text-slate-500">{totalCount > 0 ? `${totalCount} products available` : 'No products found'}</p>
           </div>
 
-          <div className="flex w-full gap-3 lg:max-w-xl">
+          <div className="flex w-full flex-col gap-3 sm:flex-row lg:max-w-xl">
             <div className="relative flex-1">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
@@ -213,13 +209,13 @@ export default function HomePage() {
                 className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-10 pr-4 text-sm outline-none transition focus:border-indigo-500"
               />
             </div>
-            <Button onClick={handleApplyFilters}>Search</Button>
+            <Button className="w-full sm:w-auto" onClick={handleApplyFilters}>Search</Button>
           </div>
         </div>
 
         {showFilters && (
           <div className="mb-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               <label className="space-y-2">
                 <span className="text-sm font-semibold text-slate-700">Category</span>
                 <select
@@ -297,7 +293,7 @@ export default function HomePage() {
           </div>
         ) : (
           <>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {items.map((product) => (
                 <ProductCard
                   key={product.id}

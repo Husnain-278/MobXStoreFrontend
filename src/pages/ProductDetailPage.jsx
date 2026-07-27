@@ -28,7 +28,7 @@ export default function ProductDetailPage() {
     isInWishlist,
     isLoading: wishlistLoading,
   } = useWishlist();
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedImage, setSelectedImage] = useState({ productId: null, image: '' });
   const [reviewForm, setReviewForm] = useState({ rating: 5, comment: '' });
   const [reviewSubmitting, setReviewSubmitting] = useState(false);
 
@@ -46,18 +46,18 @@ export default function ProductDetailPage() {
     }
   }, [token]);
 
-  useEffect(() => {
-    if (currentProduct?.primary_image && !selectedImage) {
-      setSelectedImage(currentProduct.primary_image);
-    }
-  }, [currentProduct, selectedImage]);
-
   const images = useMemo(() => {
     const productImages = currentProduct?.images?.map((item) => item.image) || [];
     return currentProduct?.primary_image
       ? [currentProduct.primary_image, ...productImages.filter((image) => image !== currentProduct.primary_image)]
       : productImages;
   }, [currentProduct]);
+
+  const activeImage = currentProduct
+    ? selectedImage.productId === currentProduct.id && selectedImage.image
+      ? selectedImage.image
+      : currentProduct.primary_image
+    : '';
 
   const handleAddToCart = async () => {
     if (!token) {
@@ -193,27 +193,27 @@ export default function ProductDetailPage() {
         </button>
 
         <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-          <Card className="p-0 overflow-hidden">
-            <div className="bg-white p-4">
+          <Card className="overflow-hidden p-0">
+            <div className="bg-white p-3 sm:p-4">
               <div className="overflow-hidden rounded-3xl bg-slate-100">
                 <img
-                  src={selectedImage || currentProduct.primary_image}
+                  src={activeImage}
                   alt={currentProduct.name}
-                  className="h-95 w-full object-contain bg-white p-4"
+                  className="h-[22rem] w-full bg-white object-contain p-3 sm:h-[30rem] sm:p-4"
                 />
               </div>
               {images.length > 1 && (
-                <div className="mt-4 grid grid-cols-4 gap-3">
+                <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3">
                   {images.map((image) => (
                     <button
                       key={image}
                       type="button"
-                      onClick={() => setSelectedImage(image)}
+                      onClick={() => setSelectedImage({ productId: currentProduct.id, image })}
                       className={`overflow-hidden rounded-2xl border-2 transition ${
-                        selectedImage === image ? 'border-indigo-600' : 'border-transparent'
+                        activeImage === image ? 'border-indigo-600' : 'border-transparent'
                       }`}
                     >
-                      <img src={image} alt="Product thumbnail" className="h-20 w-full bg-white object-contain p-1" />
+                      <img src={image} alt="Product thumbnail" className="h-16 w-full bg-white object-contain p-1 sm:h-20" />
                     </button>
                   ))}
                 </div>
@@ -222,36 +222,36 @@ export default function ProductDetailPage() {
           </Card>
 
           <div className="space-y-6">
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
               <div className="flex flex-wrap items-center gap-3">
                 <Badge variant={currentProduct.stock > 0 ? 'success' : 'danger'}>{stockState}</Badge>
                 <Badge variant="gray">{currentProduct.brand}</Badge>
                 <Badge variant="gray">{currentProduct.category}</Badge>
               </div>
 
-              <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
+              <h1 className="mt-4 text-2xl font-black tracking-tight text-slate-900 sm:text-4xl">
                 {currentProduct.name}
               </h1>
 
-              <div className="mt-4 flex items-end justify-between gap-4">
+              <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <div className="text-sm text-slate-500">Price</div>
-                  <div className="text-4xl font-black text-indigo-600">
+                  <div className="text-3xl font-black text-indigo-600 sm:text-4xl">
                     {formatCurrency(currentProduct.price)}
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-slate-50 px-4 py-3 text-right">
+                <div className="rounded-2xl bg-slate-50 px-4 py-3 text-left sm:text-right">
                   <div className="text-sm text-slate-500">Stock</div>
                   <div className="text-lg font-bold text-slate-900">{currentProduct.stock}</div>
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Button
                   onClick={handleAddToCart}
                   disabled={cartLoading || currentProduct.stock === 0}
-                  className="inline-flex items-center gap-2"
+                  className="w-full inline-flex items-center gap-2 sm:w-auto"
                 >
                   <ShoppingCart className="h-4 w-4" />
                   {cartLoading ? 'Adding...' : 'Add to cart'}
@@ -260,7 +260,7 @@ export default function ProductDetailPage() {
                   variant="outline"
                   onClick={handleWishlistToggle}
                   disabled={wishlistLoading}
-                  className="inline-flex items-center gap-2"
+                  className="w-full inline-flex items-center gap-2 sm:w-auto"
                 >
                   <Heart className="h-4 w-4" />
                   {isInWishlist(currentProduct.id) ? 'Remove from wishlist' : 'Save to wishlist'}
@@ -289,7 +289,7 @@ export default function ProductDetailPage() {
                 <h2 className="text-xl font-bold text-slate-900">Specifications</h2>
                 <div className="mt-4 divide-y divide-slate-200">
                   {currentProduct.specifications.map((spec) => (
-                    <div key={spec.name} className="flex items-center justify-between py-3 text-sm">
+                    <div key={spec.name} className="flex flex-col gap-1 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
                       <span className="font-medium text-slate-500">{spec.name}</span>
                       <span className="font-semibold text-slate-900">{spec.value}</span>
                     </div>
@@ -329,7 +329,7 @@ export default function ProductDetailPage() {
               {currentProduct.reviews?.length > 0 ? (
                 currentProduct.reviews.map((review) => (
                   <div key={review.id} className="rounded-2xl bg-slate-50 p-4">
-                    <div className="flex items-center justify-between gap-3">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                       <div className="font-semibold text-slate-900">{review.user}</div>
                       <div className="flex items-center gap-1 text-amber-500">
                         <Star className="h-4 w-4 fill-amber-400 text-amber-400" />

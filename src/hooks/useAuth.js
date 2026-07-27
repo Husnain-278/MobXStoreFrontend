@@ -6,6 +6,7 @@ import {
   getProfile,
   logoutUser,
   clearError,
+  clearSuccess,
 } from '../store/slices/authSlice';
 
 export const useAuth = () => {
@@ -25,5 +26,6 @@ export const useAuth = () => {
     getProfile: () => dispatch(getProfile()),
     logout: () => dispatch(logoutUser()),
     clearError: () => dispatch(clearError()),
+    clearSuccess: () => dispatch(clearSuccess()),
   };
 };

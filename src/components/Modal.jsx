@@ -20,11 +20,11 @@ export default function Modal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className={`bg-white rounded-lg shadow-xl ${sizeClasses[size]} w-full max-h-screen overflow-y-auto`}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-3 sm:items-center sm:p-4">
+      <div className={`w-full ${sizeClasses[size]} max-h-[calc(100vh-1.5rem)] overflow-y-auto rounded-2xl bg-white shadow-xl sm:rounded-2xl`}>
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-xl font-bold text-gray-900">{title}</h2>
+        <div className="flex items-center justify-between border-b p-4 sm:p-6">
+          <h2 className="text-lg font-bold text-gray-900 sm:text-xl">{title}</h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 transition"
@@ -34,13 +34,13 @@ export default function Modal({
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {children}
         </div>
 
         {/* Actions */}
         {actions && (
-          <div className="flex gap-4 p-6 border-t justify-end">
+          <div className="flex flex-col-reverse gap-3 border-t p-4 sm:flex-row sm:justify-end sm:p-6">
             {actions.map((action, index) => (
               <Button
                 key={index}

@@ -99,9 +99,9 @@ export default function WishlistPage() {
   return (
     <div className="min-h-screen bg-[#f6f7fb] px-4 py-8 lg:px-6 lg:py-12">
       <div className="mx-auto max-w-7xl">
-        <div className="flex items-end justify-between gap-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
           <div>
-            <h1 className="text-3xl font-black tracking-tight text-slate-900">My Wishlist</h1>
+            <h1 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">My Wishlist</h1>
             <p className="mt-2 text-slate-500">Saved products and quick actions.</p>
           </div>
           <Link to="/" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700">
@@ -137,7 +137,7 @@ export default function WishlistPage() {
 
               return (
                 <Card key={wishlistItem.id} className="flex flex-col overflow-hidden p-0">
-                  <div className="relative h-52 bg-slate-100">
+                  <div className="relative h-44 bg-slate-100 sm:h-52">
                     <Link to={product?.slug ? `/product/${product.slug}` : '/'} className="block h-full">
                       <img
                         src={product?.primary_image || 'https://via.placeholder.com/600x400?text=Wishlist+Item'}
@@ -174,7 +174,7 @@ export default function WishlistPage() {
                       {product?.price ? formatCurrency(product.price) : 'Unavailable'}
                     </div>
 
-                    <div className="mt-5 flex gap-3">
+                    <div className="mt-5 flex flex-col gap-3 sm:flex-row">
                       <Button
                         className="flex-1"
                         onClick={() => handleAddToCart(wishlistItem.product)}

@@ -10,7 +10,7 @@ import Alert from '../components/Alert';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  const { register, isLoading, error } = useAuth();
+  const { register, isLoading, error, registrationSuccess, clearSuccess } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -18,6 +18,7 @@ export default function RegisterPage() {
   });
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,8 +54,12 @@ export default function RegisterPage() {
         setApiError(message);
         return;
       }
-      toast.success('Account created! Please check your email to verify.');
-      navigate('/login');
+
+      const message = 'Account created successfully! Please check your email to verify your account.';
+      setSuccessMessage(message);
+      setApiError('');
+      setFormData({ email: '', password: '', confirmPassword: '' });
+      clearSuccess();
     } catch (err) {
       setApiError(formatErrorMessage(err));
     }
@@ -63,15 +68,24 @@ export default function RegisterPage() {
   const passwordStrength = getPasswordStrength(formData.password);
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">Create Account</h2>
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-start justify-center px-4 py-8 sm:items-center sm:py-12">
+      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg sm:p-8">
+        <h2 className="mb-8 text-center text-2xl font-bold text-gray-900 sm:text-3xl">Create Account</h2>
 
         {apiError && (
           <Alert
             type="error"
             message={apiError}
             onClose={() => setApiError('')}
+            className="mb-6"
+          />
+        )}
+
+        {successMessage && (
+          <Alert
+            type="success"
+            message={successMessage}
+            onClose={() => setSuccessMessage('')}
             className="mb-6"
           />
         )}

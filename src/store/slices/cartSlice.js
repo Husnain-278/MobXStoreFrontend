@@ -38,7 +38,9 @@ export const addToCart = createAsyncThunk(
       const response = await cartService.addToCart(productId, quantity);
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || 'Failed to add to cart');
+      return rejectWithValue(
+        error.response?.data?.errors || error.response?.data || 'Failed to add to cart'
+      );
     }
   }
 );

@@ -11,18 +11,18 @@ export default function MainLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       {/* Navbar */}
       <nav className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+        <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 sm:py-4">
+          <div className="flex items-center justify-between gap-3">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
-              <div className="text-2xl font-bold text-indigo-600">📱 MobXStore</div>
+              <div className="text-lg font-bold text-indigo-600 sm:text-2xl">📱 MobXStore</div>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-6 lg:gap-8">
               <Link to="/" className="text-gray-600 hover:text-indigo-600 transition">
                 Home
               </Link>
@@ -42,7 +42,7 @@ export default function MainLayout() {
             </div>
 
             {/* Right Side - Cart & Auth */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
               {/* Cart */}
               {token && (
                 <Link to="/cart" className="relative">
@@ -91,7 +91,7 @@ export default function MainLayout() {
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden"
+                className="rounded-lg p-2 hover:bg-slate-100 md:hidden"
               >
                 {mobileMenuOpen ? (
                   <X className="w-6 h-6 text-gray-600" />
@@ -104,7 +104,7 @@ export default function MainLayout() {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden mt-4 space-y-4 border-t pt-4">
+            <div className="md:hidden mt-4 space-y-3 rounded-2xl border-t bg-slate-50 p-4 pt-4">
               <Link
                 to="/"
                 className="block text-gray-600 hover:text-indigo-600"
@@ -167,8 +167,8 @@ export default function MainLayout() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mb-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <h3 className="font-bold mb-4">📱 MobXStore</h3>
               <p className="text-gray-400 text-sm">

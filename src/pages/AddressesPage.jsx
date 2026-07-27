@@ -61,9 +61,9 @@ export default function AddressesPage() {
   return (
     <div className="min-h-screen bg-[#f6f7fb] px-4 py-8 lg:px-6 lg:py-12">
       <div className="mx-auto max-w-6xl">
-        <div className="flex items-end justify-between gap-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
           <div>
-            <h1 className="text-3xl font-black tracking-tight text-slate-900">My Addresses</h1>
+            <h1 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">My Addresses</h1>
             <p className="mt-2 text-slate-500">Manage your shipping addresses and defaults.</p>
           </div>
           <Button onClick={() => setShowForm(true)}>Add address</Button>
@@ -91,7 +91,7 @@ export default function AddressesPage() {
             </Button>
           </Card>
         ) : (
-          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {addresses.map((address) => (
               <Card key={address.id}>
                 <div className="flex items-start justify-between gap-3">

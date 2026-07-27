@@ -12,6 +12,8 @@ import VerifyEmailPage from './pages/VerifyEmailPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
+import PaymentCancelPage from './pages/PaymentCancelPage';
 import OrdersPage from './pages/OrdersPage';
 import OrderDetailPage from './pages/OrderDetailPage';
 import AddressesPage from './pages/AddressesPage';
@@ -70,6 +72,16 @@ export default function App() {
           <Route path="/checkout" element={
             <ProtectedRoute>
               <CheckoutPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/payment/success" element={
+            <ProtectedRoute>
+              <PaymentSuccessPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/payment/cancel" element={
+            <ProtectedRoute>
+              <PaymentCancelPage />
             </ProtectedRoute>
           } />
           

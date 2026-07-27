@@ -38,9 +38,9 @@ export default function VerifyEmailPage() {
   }, [uidb64, token]);
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8 text-center">
-        <h2 className="text-3xl font-bold mb-4 text-gray-900">Email Verification</h2>
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-start justify-center px-4 py-8 sm:items-center sm:py-12">
+      <div className="w-full max-w-md rounded-lg bg-white p-6 text-center shadow-lg sm:p-8">
+        <h2 className="mb-4 text-2xl font-bold text-gray-900 sm:text-3xl">Email Verification</h2>
         
         {status === 'verifying' ? (
           <div>

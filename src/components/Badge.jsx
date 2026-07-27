@@ -12,7 +12,7 @@ export default function Badge({
     gray: 'bg-gray-100 text-gray-800',
   };
 
-  const baseStyles = 'inline-block px-3 py-1 rounded-full text-sm font-semibold';
+  const baseStyles = 'inline-flex items-center rounded-full px-2.5 py-1 text-xs sm:text-sm font-semibold';
 
   return (
     <span className={`${baseStyles} ${variantStyles[variant]} ${className}`}>

@@ -32,7 +32,7 @@ export default function ProductCard({
             <img
               src={imageSrc}
               alt={product.name}
-              className="h-64 w-full object-contain p-4 transition duration-300 group-hover:scale-[1.03]"
+              className="h-52 w-full object-contain p-3 transition duration-300 group-hover:scale-[1.03] sm:h-64 sm:p-4"
               onError={(e) => {
                 e.target.src = 'https://via.placeholder.com/600x600?text=Product+Image';
               }}
@@ -42,7 +42,7 @@ export default function ProductCard({
           <img
             src={imageSrc}
             alt={product.name}
-            className="h-64 w-full object-contain p-4 transition duration-300 group-hover:scale-[1.03]"
+            className="h-52 w-full object-contain p-3 transition duration-300 group-hover:scale-[1.03] sm:h-64 sm:p-4"
             onError={(e) => {
               e.target.src = 'https://via.placeholder.com/600x600?text=Product+Image';
             }}
@@ -69,23 +69,23 @@ export default function ProductCard({
       </div>
 
       {/* Content */}
-      <div className="flex h-[calc(100%-16rem)] flex-col p-5">
+      <div className="flex h-full flex-col p-4 sm:p-5">
         {/* Brand */}
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">{product.brand}</p>
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400 sm:text-xs">{product.brand}</p>
 
         {/* Product Name */}
         {detailHref ? (
-          <Link to={detailHref} className="mb-3 line-clamp-2 text-lg font-bold leading-tight text-slate-900 transition hover:text-indigo-600">
+          <Link to={detailHref} className="mb-3 line-clamp-2 text-base font-bold leading-tight text-slate-900 transition hover:text-indigo-600 sm:text-lg">
             {product.name}
           </Link>
         ) : (
-          <h3 className="mb-3 line-clamp-2 text-lg font-bold leading-tight text-slate-900">
+          <h3 className="mb-3 line-clamp-2 text-base font-bold leading-tight text-slate-900 sm:text-lg">
             {product.name}
           </h3>
         )}
 
         {/* Price */}
-        <p className="mb-5 text-xl font-black text-indigo-600">
+        <p className="mb-5 text-lg font-black text-indigo-600 sm:text-xl">
           {formatCurrency(product.price)}
         </p>
 

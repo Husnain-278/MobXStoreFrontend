@@ -32,7 +32,7 @@ export default function Pagination({
   }
 
   return (
-    <div className="flex items-center justify-center gap-2 mt-8">
+    <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
       {/* Previous Button */}
       <Button
         variant="outline"
@@ -44,10 +44,10 @@ export default function Pagination({
       </Button>
 
       {/* Page Numbers */}
-      <div className="flex gap-1">
+      <div className="flex flex-wrap items-center justify-center gap-1">
         {pages.map((page, index) => (
           page === '...' ? (
-            <span key={`ellipsis-${index}`} className="px-2 py-1">
+            <span key={`ellipsis-${index}`} className="px-1.5 py-1 text-sm text-slate-500">
               ...
             </span>
           ) : (
@@ -55,7 +55,7 @@ export default function Pagination({
               key={page}
               onClick={() => onPageChange(page)}
               disabled={disabled || currentPage === page}
-              className={`px-3 py-1 rounded-lg font-semibold transition ${
+              className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${
                 currentPage === page
                   ? 'bg-indigo-600 text-white'
                   : 'bg-gray-200 text-gray-900 hover:bg-gray-300'

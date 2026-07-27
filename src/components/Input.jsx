@@ -11,7 +11,7 @@ export default function Input({
   className = '',
   ...props
 }) {
-  const baseStyles = 'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition';
+  const baseStyles = 'w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition';
   const errorStyles = error ? 'border-red-500' : 'border-gray-300';
   const finalClass = `${baseStyles} ${errorStyles} ${className}`;
 

@@ -8,7 +8,7 @@ export default function Card({
 }) {
   const hoverClass = hover ? 'hover:shadow-xl hover:scale-105' : '';
   const cursorClass = clickable ? 'cursor-pointer' : '';
-  const finalClass = `bg-white rounded-lg shadow-lg p-6 transition ${hoverClass} ${cursorClass} ${className}`;
+  const finalClass = `bg-white rounded-2xl shadow-lg p-4 sm:p-6 transition ${hoverClass} ${cursorClass} ${className}`;
 
   return (
     <div className={finalClass} onClick={onClick}>
